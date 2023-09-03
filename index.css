@@ -1,0 +1,225 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+}
+
+/* 横屏 */
+:root {
+  /* 共同初始状态 */
+  --size: 5vw;
+  --left: 5vw;
+  --bottom: -2.5vw;
+
+  /* 太阳初始状态 */
+  --sunShadow: 0 0 4vw 1vw rgb(255, 215, 0);
+  /* 太阳运动 */
+  --sun0Left: 5vw;
+  --sun0Bottom: -2.5vw;
+  --sun25Left: 50vw;
+  --sun25Bottom: 100vh;
+  --sun25Transform: translate(-2.5vw, 8vw) scale(1);
+  --sun50Left: 90vw;
+  --sun50Bottom: -2.5vw;
+
+  /* 月亮初始状态 */
+  --moonShadow: -1.4vw 0.8vw rgb(210, 210, 210);
+  --moonTransform: translate(1.4vw, -0.8vw) scale(0.5);
+  --moonBeforeTransform: translate(-1.8vw, 0.8vw);
+  --moonBeforeShadow: 0 0 3.3vw 3vw rgb(166, 166, 166);
+  /* 月亮运动 */
+  --moon50Left: 5vw;
+  --moon50Bottom: -2.5vw;
+  --moon75Left: 50vw;
+  --moon75Bottom: 100vh;
+  --moon75Transform: translate(-1.1vw, 7.2vw) scale(1);
+  --moon100Left: 90vw;
+  --moon100Bottom: -2.5vh;
+  --moon100Transform: translate(1.4vw, -0.8vw) scale(0.5);
+}
+/* 竖屏 */
+@media (max-aspect-ratio: 1/1) {
+  :root {
+    /* 共同初始状态 */
+    --size: 5vh;
+    --left: 5vh;
+    --bottom: -2.5vh;
+
+    /* 太阳初始状态 */
+    --sunShadow: 0 0 4vh 1vh rgb(255, 215, 0);
+    /* 太阳运动 */
+    --sun0Left: 5vh;
+    --sun0Bottom: -2.5vh;
+    --sun25Left: 50vh;
+    --sun25Bottom: 100vw;
+    --sun25Transform: translate(-2.5vh, 8vh) scale(1);
+    --sun50Left: 90vh;
+    --sun50Bottom: -2.5vh;
+
+    /* 月亮初始状态 */
+    --moonShadow: -1.4vh 0.8vh rgb(210, 210, 210);
+    --moonTransform: translate(1.4vh, -0.8vh) scale(0.5);
+    --moonBeforeTransform: translate(-1.8vh, 0.8vh);
+    --moonBeforeShadow: 0 0 3.3vh 3vh rgb(166, 166, 166);
+    /* 月亮运动 */
+    --moon50Left: 5vh;
+    --moon50Bottom: -2.5vh;
+    --moon75Left: 50vh;
+    --moon75Bottom: 100vw;
+    --moon75Transform: translate(-1.1vh, 7.2vh) scale(1);
+    --moon100Left: 90vh;
+    --moon100Bottom: -2.5vw;
+    --moon100Transform: translate(1.4vh, -0.8vh) scale(0.5);
+  }
+  body {
+    transform: rotate(90deg) translateY(-100%);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+  }
+}
+/* :root {
+  height: 100%;
+} */
+
+.space {
+  height: 100%;
+  background-image: linear-gradient(
+          to bottom,
+          rgba(0, 130, 255, 1),
+          rgba(255, 255, 255, 1)
+  );
+  animation: sky 10s infinite;
+}
+
+/* 天空变化 */
+@keyframes sky {
+  /* 月亮下去，太阳出来 */
+  /* 天色破晓 */
+  from {
+    opacity: 0.25;
+  }
+
+  /* 太阳到正中间 */
+  /* 到中午了 */
+  25% {
+    opacity: 1;
+  }
+
+  /* 太阳下去，月亮出来 */
+  /* 傍晚时分 */
+  50% {
+    opacity: 0.25;
+  }
+
+  /* 月亮到正中间 */
+  /* 深夜 */
+  75% {
+    opacity: 0.15;
+  }
+
+  /* 月亮下去，太阳出来 */
+  /* 天色破晓 */
+  to {
+    opacity: 0.25;
+  }
+}
+
+.sun {
+  width: var(--size);
+  height: var(--size);
+  position: absolute;
+  background: yellow;
+  border-radius: 50%;
+  box-shadow: var(--sunShadow);
+  left: var(--left);
+  bottom: var(--bottom);
+  opacity: 0;
+  transform: scale(0.5);
+  animation: sun 10s infinite;
+}
+
+/* 太阳变化 */
+@keyframes sun {
+  /* 月亮下去，太阳出来 */
+  /* 天色破晓 */
+  from {
+    left: var(--sun0Left);
+    bottom: var(--sun0Bottom);
+    opacity: 0;
+  }
+
+  /* 太阳到正中间 */
+  /* 到中午了 */
+  25% {
+    left: var(--sun25Left);
+    bottom: var(--sun25Bottom);
+    transform: var(--sun25Transform);
+    opacity: 1;
+  }
+
+  /* 太阳下去，月亮出来 */
+  /* 傍晚时分 */
+  50% {
+    left: var(--sun50Left);
+    bottom: var(--sun50Bottom);
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.moon {
+  width: var(--size);
+  height: var(--size);
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: var(--moonShadow);
+  transform: var(--moonTransform);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: var(--left);
+  bottom: var(--bottom);
+  opacity: 0;
+  animation: moon 10s infinite;
+}
+
+.moon::before {
+  content: "";
+  width: 0;
+  height: 0;
+  transform: var(--moonBeforeTransform);
+  box-shadow: var(--moonBeforeShadow);
+  position: relative;
+  z-index: -1;
+}
+
+/* 月亮变化 */
+@keyframes moon {
+  /* 太阳下去，月亮出来 */
+  /* 傍晚时分 */
+  50% {
+    left: var(--moon50Left);
+    bottom: var(--moon50Bottom);
+    opacity: 0;
+  }
+
+  /* 月亮到正中间 */
+  /* 深夜 */
+  75% {
+    left: var(--moon75Left);
+    bottom: var(--moon75Bottom);
+    transform: var(--moon75Transform);
+    opacity: 1;
+  }
+
+  /* 月亮下去，太阳出来 */
+  /* 天色破晓 */
+  to {
+    left: var(--moon100Left);
+    bottom: var(--moon100Bottom);
+    transform: var(--moon100Transform);
+    opacity: 0;
+  }
+}
